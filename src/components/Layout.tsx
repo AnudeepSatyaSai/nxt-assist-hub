@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
+import NotificationDropdown from '@/components/NotificationDropdown';
 import { 
   Menu, 
   Home, 
@@ -15,7 +16,6 @@ import {
   User, 
   LogOut, 
   School,
-  Bell,
   MessageCircle
 } from 'lucide-react';
 
@@ -37,6 +37,11 @@ export default function Layout() {
 
   if (!user || !profile) {
     return <Navigate to="/auth" replace />;
+  }
+
+  // Check if profile needs completion
+  if (profile && (!profile.student_id || !profile.department || !profile.role)) {
+    return <Navigate to="/complete-profile" replace />;
   }
 
   const isActive = (path: string) => location.pathname === path;
@@ -157,9 +162,12 @@ export default function Layout() {
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex flex-1"></div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
-              <Button variant="ghost" size="sm">
-                <Bell className="h-5 w-5" />
-              </Button>
+              <NotificationDropdown
+                notifications={[]}
+                unreadCount={0}
+                markAsRead={() => {}}
+                markAllAsRead={() => {}}
+              />
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-border" />
               <NavLink
                 to="/profile"

@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./pages/AIAssistant";
 import Announcements from "./pages/Announcements";
 import Tickets from "./pages/Tickets";
+import ProfileCompletion from "./pages/ProfileCompletion";
 import Layout from "./components/Layout";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/complete-profile" element={<ProfileCompletion />} />
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/ai-assistant" element={<AIAssistant />} />
