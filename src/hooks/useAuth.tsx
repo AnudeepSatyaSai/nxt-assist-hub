@@ -35,47 +35,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Check if profile exists, if not create one
-          const { data: existingProfile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .single();
-            
-          if (!existingProfile && event === 'SIGNED_IN') {
-            // Create profile for new users (especially Google OAuth users)
-            const { error: profileError } = await supabase
-              .from('profiles')
-              .insert({
-                user_id: session.user.id,
-                email: session.user.email || '',
-                full_name: session.user.user_metadata?.full_name || 
-                          session.user.user_metadata?.name || 
-                          session.user.email?.split('@')[0] || '',
-                role: session.user.user_metadata?.role || 'student'
-              });
-              
-            if (profileError) {
-              console.error('Error creating profile:', profileError);
-            }
-          }
-          
-          // Fetch user profile
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .single();
-          setProfile(profile);
+          // Defer database calls to prevent deadlock
+          setTimeout(() => {
+            fetchProfile(session.user.id);
+          }, 0);
         } else {
           setProfile(null);
+          setLoading(false);
         }
-        setLoading(false);
       }
     );
 
@@ -94,12 +66,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const fetchProfile = async (userId: string) => {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
-    setProfile(profile);
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (error) {
+        console.error('Error fetching profile:', error);
+      } else {
+        setProfile(profile);
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
     setLoading(false);
   };
 
