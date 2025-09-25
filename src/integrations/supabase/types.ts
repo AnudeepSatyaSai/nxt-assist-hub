@@ -14,16 +14,307 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      announcement_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      announcements: {
+        Row: {
+          attachment_url: string | null
+          category_id: string
+          content: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_pinned: boolean | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attachment_url?: string | null
+          category_id: string
+          content: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_pinned?: boolean | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attachment_url?: string | null
+          category_id?: string
+          content?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_pinned?: boolean | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcements_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "announcement_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      permission_requests: {
+        Row: {
+          approval_notes: string | null
+          approved_by: string | null
+          attachment_url: string | null
+          created_at: string
+          description: string
+          from_date: string | null
+          id: string
+          permission_type_id: string
+          status: Database["public"]["Enums"]["permission_status"]
+          title: string
+          to_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_notes?: string | null
+          approved_by?: string | null
+          attachment_url?: string | null
+          created_at?: string
+          description: string
+          from_date?: string | null
+          id?: string
+          permission_type_id: string
+          status?: Database["public"]["Enums"]["permission_status"]
+          title: string
+          to_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_notes?: string | null
+          approved_by?: string | null
+          attachment_url?: string | null
+          created_at?: string
+          description?: string
+          from_date?: string | null
+          id?: string
+          permission_type_id?: string
+          status?: Database["public"]["Enums"]["permission_status"]
+          title?: string
+          to_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permission_requests_permission_type_id_fkey"
+            columns: ["permission_type_id"]
+            isOneToOne: false
+            referencedRelation: "permission_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      permission_types: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          requires_approval: boolean | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          requires_approval?: boolean | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          requires_approval?: boolean | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          department: string | null
+          email: string
+          full_name: string
+          id: string
+          phone_number: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          student_id: string | null
+          updated_at: string
+          user_id: string
+          year_of_study: number | null
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          email: string
+          full_name: string
+          id?: string
+          phone_number?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          student_id?: string | null
+          updated_at?: string
+          user_id: string
+          year_of_study?: number | null
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          phone_number?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          student_id?: string | null
+          updated_at?: string
+          user_id?: string
+          year_of_study?: number | null
+        }
+        Relationships: []
+      }
+      ticket_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      tickets: {
+        Row: {
+          assigned_to: string | null
+          attachment_url: string | null
+          category_id: string
+          created_at: string
+          description: string
+          id: string
+          priority: Database["public"]["Enums"]["ticket_priority"]
+          resolution_notes: string | null
+          resolved_at: string | null
+          status: Database["public"]["Enums"]["ticket_status"]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          attachment_url?: string | null
+          category_id: string
+          created_at?: string
+          description: string
+          id?: string
+          priority?: Database["public"]["Enums"]["ticket_priority"]
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["ticket_status"]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          attachment_url?: string | null
+          category_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          priority?: Database["public"]["Enums"]["ticket_priority"]
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          status?: Database["public"]["Enums"]["ticket_status"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tickets_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "ticket_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { user_uuid?: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
+      is_faculty_or_admin: {
+        Args: { user_uuid?: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      permission_status: "pending" | "approved" | "rejected"
+      ticket_priority: "low" | "medium" | "high" | "urgent"
+      ticket_status: "open" | "in_progress" | "resolved" | "rejected"
+      user_role: "student" | "faculty" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +441,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      permission_status: ["pending", "approved", "rejected"],
+      ticket_priority: ["low", "medium", "high", "urgent"],
+      ticket_status: ["open", "in_progress", "resolved", "rejected"],
+      user_role: ["student", "faculty", "admin"],
+    },
   },
 } as const
