@@ -11,6 +11,9 @@ import AIAssistant from "./pages/AIAssistant";
 import Announcements from "./pages/Announcements";
 import Tickets from "./pages/Tickets";
 import ProfileCompletion from "./pages/ProfileCompletion";
+import HostelManagement from "./pages/HostelManagement";
+import MessManagement from "./pages/MessManagement";
+import FacilityBooking from "./pages/FacilityBooking";
 import Layout from "./components/Layout";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +32,9 @@ const App = () => (
             <Route path="/complete-profile" element={<ProfileCompletion />} />
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/hostel" element={<HostelManagement />} />
+              <Route path="/mess" element={<MessManagement />} />
+              <Route path="/facilities" element={<FacilityBooking />} />
               <Route path="/ai-assistant" element={<AIAssistant />} />
               <Route path="/announcements" element={<Announcements />} />
               <Route path="/tickets" element={<Tickets />} />

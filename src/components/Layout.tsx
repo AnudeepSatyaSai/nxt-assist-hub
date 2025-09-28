@@ -16,7 +16,9 @@ import {
   User, 
   LogOut, 
   School,
-  MessageCircle
+  MessageCircle,
+  UtensilsCrossed,
+  Building
 } from 'lucide-react';
 
 export default function Layout() {
@@ -48,10 +50,12 @@ export default function Layout() {
 
   const studentNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Hostel Management', href: '/hostel', icon: Home },
+    { name: 'Mess Management', href: '/mess', icon: UtensilsCrossed },
+    { name: 'Facility Booking', href: '/facilities', icon: Building },
     { name: 'Raise Ticket', href: '/tickets/new', icon: Ticket },
     { name: 'My Tickets', href: '/tickets', icon: FileText },
     { name: 'Announcements', href: '/announcements', icon: Megaphone },
-    { name: 'Permissions', href: '/permissions', icon: FileText },
     { name: 'AI Assistant', href: '/ai-assistant', icon: MessageCircle },
   ];
 
