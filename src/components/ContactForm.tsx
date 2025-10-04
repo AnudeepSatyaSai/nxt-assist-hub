@@ -1,42 +1,53 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Phone, Send, MapPin } from 'lucide-react';
+import { Mail, Phone, Send, MapPin, CheckCircle2 } from 'lucide-react';
+import { contactFormSchema, type ContactFormData } from '@/lib/validations';
 
 const ContactForm = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: ''
+    }
+  });
+
+  const handleSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Simulate API call - In production, send to backend
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       toast({
-        title: "Message Sent!",
+        title: "Message Sent Successfully!",
         description: "We'll get back to you within 24 hours.",
+        duration: 5000,
       });
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    }
   };
 
   return (
@@ -50,72 +61,116 @@ const ContactForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Input
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
                   name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="bg-background"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name *</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="John Doe" 
+                          className="bg-background"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div>
-                <Input
+                <FormField
+                  control={form.control}
                   name="email"
-                  type="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="bg-background"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address *</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="email"
+                          placeholder="john@example.com" 
+                          className="bg-background"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Input
+              <div className="grid md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
                   name="phone"
-                  type="tel"
-                  placeholder="Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="bg-background"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="tel"
+                          placeholder="+91 1234567890" 
+                          className="bg-background"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div>
-                <Input
+                <FormField
+                  control={form.control}
                   name="subject"
-                  placeholder="Subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="bg-background"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subject *</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="How can we help?" 
+                          className="bg-background"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-            </div>
-            <div>
-              <Textarea
+              <FormField
+                control={form.control}
                 name="message"
-                placeholder="Your Message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                className="bg-background resize-none"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message *</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us more about your inquiry..."
+                        rows={5}
+                        className="bg-background resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <Button 
-              type="submit" 
-              disabled={isSubmitting}
-              className="w-full bg-gradient-primary text-white hover-scale"
-            >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-              <Send className="ml-2 h-4 w-4" />
-            </Button>
-          </form>
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-gradient-primary text-white hover-scale"
+              >
+                {isSubmitting ? (
+                  <>Sending...</>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </form>
+          </Form>
         </CardContent>
       </Card>
 

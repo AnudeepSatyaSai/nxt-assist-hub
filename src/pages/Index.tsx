@@ -6,6 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import GoogleMap from '@/components/GoogleMap';
 import ContactForm from '@/components/ContactForm';
+import ParallaxSection from '@/components/ParallaxSection';
+import PortfolioSection from '@/components/PortfolioSection';
+import TestimonialCarousel from '@/components/TestimonialCarousel';
 import { 
   School, 
   Ticket, 
@@ -161,11 +164,13 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground">Nxtwave Institute of Advanced Technologies</p>
               </div>
             </div>
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden lg:flex items-center space-x-6">
               <a href="#home" className="text-sm font-medium text-foreground hover:text-niat-blue transition-colors">Home</a>
               <a href="#about" className="text-sm font-medium text-muted-foreground hover:text-niat-blue transition-colors">About</a>
               <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-niat-blue transition-colors">Features</a>
+              <a href="#portfolio" className="text-sm font-medium text-muted-foreground hover:text-niat-blue transition-colors">Portfolio</a>
               <a href="#gallery" className="text-sm font-medium text-muted-foreground hover:text-niat-blue transition-colors">Gallery</a>
+              <a href="#testimonials" className="text-sm font-medium text-muted-foreground hover:text-niat-blue transition-colors">Testimonials</a>
               <a href="#contact" className="text-sm font-medium text-muted-foreground hover:text-niat-blue transition-colors">Contact</a>
             </nav>
             <Button asChild className="bg-gradient-primary text-white hover-scale shadow-primary">
@@ -395,8 +400,36 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-gradient-to-br from-muted/50 to-background">
+      {/* Parallax Section */}
+      <ParallaxSection 
+        backgroundImage={computerLabImg}
+        title="Innovation Meets Education"
+        subtitle="Experience cutting-edge learning in state-of-the-art facilities"
+        ctaText="Explore Programs"
+        ctaLink="/auth"
+      />
+
+      {/* Portfolio/Projects Section */}
+      <section id="portfolio" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-niat-orange text-white">
+              <Trophy className="h-3 w-3 mr-1" />
+              Student Projects
+            </Badge>
+            <h3 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Innovation Showcase
+            </h3>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Discover groundbreaking projects developed by our talented students
+            </p>
+          </div>
+          <PortfolioSection />
+        </div>
+      </section>
+
+      {/* Testimonials Carousel */}
+      <section id="testimonials" className="py-20 bg-gradient-to-br from-muted/50 to-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <Badge className="mb-4 bg-niat-pink text-white">
@@ -406,29 +439,12 @@ const Index = () => {
             <h3 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               What Our Community Says
             </h3>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Real feedback from students, faculty, and alumni
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="shadow-xl border-0 hover-lift animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardContent className="pt-6">
-                  <div className="flex items-center mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-niat-warning text-niat-warning" />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground mb-6 italic">"{testimonial.content}"</p>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-primary" />
-                    <div>
-                      <p className="font-semibold text-foreground">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <TestimonialCarousel testimonials={testimonials} />
         </div>
       </section>
 
