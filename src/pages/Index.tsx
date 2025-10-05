@@ -339,11 +339,12 @@ const Index = () => {
             {features.map((feature, index) => (
               <Card 
                 key={index} 
-                className={`${feature.bgColor} border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in hover-glow`}
+                className={`${feature.bgColor} border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in hover-glow cursor-pointer group`}
                 style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => window.location.href = '/auth'}
               >
                 <CardHeader>
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-4 shadow-lg`}>
+                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-4 shadow-lg transition-transform group-hover:scale-110`}>
                     <feature.icon className="h-7 w-7 text-white" />
                   </div>
                   <CardTitle className="text-xl">{feature.title}</CardTitle>
@@ -352,6 +353,12 @@ const Index = () => {
                   <CardDescription className="text-base">
                     {feature.description}
                   </CardDescription>
+                  <Button asChild className="w-full mt-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+                    <Link to="/auth">
+                      Access Feature
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}

@@ -10,6 +10,13 @@ import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./pages/AIAssistant";
 import Announcements from "./pages/Announcements";
 import Tickets from "./pages/Tickets";
+import CreateTicket from "./pages/CreateTicket";
+import CreatePermission from "./pages/CreatePermission";
+import AdminTickets from "./pages/AdminTickets";
+import AdminAnnouncements from "./pages/AdminAnnouncements";
+import AdminPermissions from "./pages/AdminPermissions";
+import AdminAnalytics from "./pages/AdminAnalytics";
+import Profile from "./pages/Profile";
 import ProfileCompletion from "./pages/ProfileCompletion";
 import HostelManagement from "./pages/HostelManagement";
 import MessManagement from "./pages/MessManagement";
@@ -32,12 +39,22 @@ const App = () => (
             <Route path="/complete-profile" element={<ProfileCompletion />} />
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/hostel" element={<HostelManagement />} />
               <Route path="/mess" element={<MessManagement />} />
               <Route path="/facilities" element={<FacilityBooking />} />
+              <Route path="/tickets" element={<Tickets />} />
+              <Route path="/tickets/new" element={<CreateTicket />} />
+              <Route path="/permissions/new" element={<CreatePermission />} />
               <Route path="/ai-assistant" element={<AIAssistant />} />
               <Route path="/announcements" element={<Announcements />} />
-              <Route path="/tickets" element={<Tickets />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin/tickets" element={<AdminTickets />} />
+              <Route path="/admin/announcements" element={<Announcements />} />
+              <Route path="/admin/announcements/new" element={<AdminAnnouncements />} />
+              <Route path="/admin/permissions" element={<AdminPermissions />} />
+              <Route path="/admin/analytics" element={<AdminAnalytics />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
